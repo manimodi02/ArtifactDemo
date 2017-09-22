@@ -2,13 +2,6 @@
     "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "Launch an EC2 instance with artifactory",
     "Parameters": {
-
-        "Region": {
-            "Description": "Select the region",
-            "Type": "String",
-            "Default": "US East (Ohio)",
-            "AllowedValues": ["US East (Ohio)","Asia Pacific 					        (Mumbai)"] 
-        },
         "KeyName": {
             "Description": "Key Pair Name",
             "Type": "AWS::EC2::KeyPair::KeyName",
@@ -20,12 +13,12 @@
             "Default": "t2.micro",
             "AllowedValues": ["t2.micro", "t2.small", "t2.medium"]
         }
-    },
+            },
 	    "Mappings" : {
 		"RegionMapImageId" : {
 		"us-east-1":{"64":"ami-4fffc834"},
 		"us-east-2":{"64":"ami-ea87a78f"},
-        "us-west-2":{"64":"ami-aa5ebdd2"}		
+           "us-west-2":{"64":"ami-aa5ebdd2"}		
 		}
 		},
 
@@ -36,18 +29,23 @@
                 "ImageId": {"Fn::FindInMap" : [ "RegionMapImageId", { "Ref" : "AWS::Region" }, "64"]},
                 "InstanceType": {"Ref": "InstanceType"},
                 "KeyName": {"Ref": "KeyName"},
-			"AvailabilityZone":"us-east-1a",
                 "UserData":
+
                 {"Fn::Base64": {"Fn::Join": ["", [
                     "#!/bin/bash -ex \n",
 		         "sudo su - \n",
 		         "yum update -y \n",
 		         "yum install java-1.8.0 -y \n",
                     "yum remove java-1.7.0-openjdk -y \n",
-                    "wget https://bintray.com/jfrog/artifactory-pro-rpms/rpm -O bintray-jfrog-artifactory-pro-rpms.repo \n",
+                    
+			    "wget https://bintray.com/jfrog/artifactory-pro-rpms/rpm -O bintray-jfrog-artifactory-pro-rpms.repo \n",
                     "sudo mv bintray-jfrog-artifactory-pro-rpms.repo /etc/yum.repos.d/ \n",
                     "yum install jfrog-artifactory-pro -y \n",
                     "service artifactory start \n"
+
+			    "chkconfig artifactory on\n",
+				"sudo wget -O https://bintray.com/jfrog/artifactory-pro-rpms/rpm -O bintray-jfrog-artifactory-pro-rpms.repo \n",
+
 
                 ]]}
                 }
