@@ -6,6 +6,7 @@
             "Description": "Key Pair Name",
             "Type": "AWS::EC2::KeyPair::KeyName",
             "Default": "myawskey"
+	}
         },
         "InstanceType": {
             "Description": "Select one of these instance",
