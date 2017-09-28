@@ -18,7 +18,8 @@
 		"RegionToImageId" : {
 		"us-east-1":{"64":"ami-4fffc834"},
 		"us-east-2":{"64":"ami-ea87a78f"},
-        "us-west-2":{"64":"ami-aa5ebdd2"}		
+        "us-west-2":{"64":"ami-aa5ebdd2"},
+		"ap-south-1":{"64":"ami-d7abd1b8"}
 		}
 		},
 	
@@ -41,8 +42,16 @@
 					"yum install jenkins -y\n",
 					"service jenkins start\n",
 					"chkconfig jenkins on\n",
-					"sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo\n"
-					"bg java -Djenkins.install.runSetupWizard=false -jar jenkins.war\n"
+					"sleep 20 \n",
+					"wget https://s3-us-west-2.amazonaws.com/amitbucket786/jobs.tar.gz\n",
+                    "tar xvzf jobs.tar.gz -C /var/lib/jenkins/jobs\n",
+					"sleep 20 \n",
+				    "sudo rm -rf /var/lib/jenkins/secrets/initialAdminPassword\n",
+					"sleep 20 \n",
+					"wget https://s3.amazonaws.com/amitbucketcredentials/users.tar.gz\n",
+                    "tar xvzf users.tar.gz -C /var/lib/jenkins/users\n",
+					"service jenkins restart\n"
+					
                 ]]}
                 }
             }
